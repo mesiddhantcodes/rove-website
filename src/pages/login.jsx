@@ -1,12 +1,11 @@
 import React from "react";
-import { TEInput, TERipple } from "tw-elements-react";
 
-export default function ExampleV3() {
+export default function login() {
   return (
     <section class="bg-white-50 dark:bg-gray-400">
       <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-          <img class="w-11 h-11 mr-2 rounded-lg" src="./src/assets/rove.png" alt="logo">
+          <img class="w-11 h-11 mr-2 rounded-lg" src="./src/assets/images/rove.png" alt="logo">
             ROVE
           </img>
         </a>
