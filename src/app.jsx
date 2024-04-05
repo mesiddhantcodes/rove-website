@@ -5,10 +5,10 @@ export default function App() {
 
   return (
     <>
-      <div class="bg-white min-h-screen flex flex-col justify-center items-center py-8 px-4">
+      <div class="bg-gray-100 dark:bg-gray-500 min-h-screen flex flex-col justify-center items-center py-8 px-4">
         <p class="text-black text-4xl mb-4">Welcome to ROVE</p>
         {/* Image */}
-        <img src="./src/assets/images/rove.png" alt="" class="h-32 w-32 mb-4" />
+        <img src="./src/assets/images/rove2.png" alt="" class="h-[50%] w-[50 %] mb-4 rounded-full " />
 
         <div class="flex flex-col items-center">
           {/* Login button */}
