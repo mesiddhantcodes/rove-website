@@ -13,18 +13,17 @@ export default function TravellerForm({ showModal, setShowModal, modelData }) {
       toast.error(e.message);
     }
   };
-  const loadStoppages=async()=>{
-    try{
-      const {data}=await getStoppageAPI()
-      console.log(data)
-    }catch(e){
-      toast.error(e.message)
+  const loadStoppages = async () => {
+    try {
+      const { data } = await getStoppageAPI();
+      console.log(data);
+    } catch (e) {
+      toast.error(e.message);
     }
-  
-  }
-  useEffect(()=>{
-loadStoppages()
-  },[])
+  };
+  useEffect(() => {
+    loadStoppages();
+  }, []);
   return (
     <div className="flex justify-center items-center w-full">
       <div
