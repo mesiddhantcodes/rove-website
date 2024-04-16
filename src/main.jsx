@@ -6,9 +6,11 @@ import LoginPage from "./pages/login";
 import Dashboard from "./pages/dashboard";
 import "./index.css";
 import Sidebar from "./components/sidebar";
-import Travellar from "./pages/travellar";
+import Travellar from "./pages/users";
 import { Toaster } from "react-hot-toast";
-import Driver from "./pages/driver";
+import Routes from "./pages/route";
+import DashboardLayout from "./DashboardLayout";
+import BusForm from "./pages/bus";
 
 const Main = () => {
   const [router, setRouter] = useRouter();
@@ -28,7 +30,7 @@ const Main = () => {
     } else {
       setIsAuthPages(false);
     }
-  }, [router.path]);
+  }, [router.path,localStorage.getItem("token")]);
   return (
     <div
       className={`flex flex-row w-[100%] ${
@@ -36,21 +38,26 @@ const Main = () => {
       }`}
     >
       {isAuthPages ? null : <Sidebar />}
-      <div
-        className={
-           "flex items-center justify-center p-5 w-full bg-gray-100 dark:bg-gray-500 h-screen" 
-        }
-      >
-        <Toaster/>
+      {localStorage.getItem("token") ? (
+        <DashboardLayout>
+          <Toaster />
+          <Router>
+            <Route path="/" component={App} />
+
+            <Route path="/dashboard" component={Dashboard} />
+
+            <Route path="/travellers" component={Travellar} />
+            <Route path="/driver" component={Travellar} />
+            <Route path="/routes" component={Routes} />
+            <Route path="/bus" component={BusForm} />
+          </Router>
+        </DashboardLayout>
+      ) : (
         <Router>
-          <Route path="/" component={App} />
-          <Route path="/login" component={LoginPage} />
-          <Route path="/dashboard" component={Dashboard} />
+          <Route path="/" component={LoginPage} />
           <Route path="/forgot-password" component={LoginPage} />
-          <Route path="/travellars" component={Travellar} />
-          <Route path="/driver" component={Driver} />
         </Router>
-      </div>
+      )}
     </div>
   );
 };
