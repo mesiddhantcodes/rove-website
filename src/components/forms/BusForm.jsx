@@ -1,8 +1,11 @@
 import { useEffect, useState } from "preact/hooks";
 import React from "react";
-import { addBusAPI } from "../../service/bus.service";
+import { addBusAPI, updateBusAPI } from "../../service/bus.service";
 import toast from "react-hot-toast";
-import { getAllDriversAPI } from "../../service/driver.service";
+import {
+  getAllDriversAPI,
+  updateDriverAPI,
+} from "../../service/driver.service";
 import { getRoutesAPI } from "../../service/route.service";
 
 export default function BusForm({ showModal, setShowModal, modelData }) {
@@ -12,8 +15,18 @@ export default function BusForm({ showModal, setShowModal, modelData }) {
 
   const handleSubmit = async () => {
     try {
-      await addBusAPI(payload);
-      window.location.reload();
+      if (modelData) {
+        // delete payload._id;
+        // delete payload.__v;
+        console.log("payload", payload);
+        console.log("modelData", modelData);
+        await updateBusAPI(modelData._id, payload);
+        window.location.reload();
+      } else {
+        await addBusAPI(payload);
+        window.location.reload();
+      }
+      // }
     } catch (e) {
       toast.error(e.message);
     }
@@ -22,7 +35,7 @@ export default function BusForm({ showModal, setShowModal, modelData }) {
   const getDrivers = async () => {
     const response = await getAllDriversAPI();
     setDrivers(response.data);
-    console.log("=============", response.data);
+    // console.log("=============", response.data);
   };
   const getRoutes = async () => {
     const response = await getRoutesAPI();
@@ -226,7 +239,7 @@ export default function BusForm({ showModal, setShowModal, modelData }) {
                     clipRule="evenodd"
                   />
                 </svg>
-                Add Bus
+                {modelData ? "Update" : "Add"} Bus
               </button>
             </div>
           </div>

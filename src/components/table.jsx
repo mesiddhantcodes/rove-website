@@ -6,9 +6,8 @@ export default function GenericTable({
   handleAdd,
   actions,
   filters,
-  modelData
+  modelData,
 }) {
-  
   return (
     <section className="  w-full">
       <div className="mx-auto w-full px-4 lg:px-12">
@@ -20,7 +19,7 @@ export default function GenericTable({
                 <label htmlFor="simple-search" className="sr-only">
                   Search
                 </label>
-                <div className="relative w-full">
+                {/* <div className="relative w-full">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg
                       aria-hidden="true"
@@ -43,7 +42,7 @@ export default function GenericTable({
                     placeholder="Search"
                     required=""
                   />
-                </div>
+                </div> */}
               </form>
             </div>
             <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
@@ -259,13 +258,16 @@ export default function GenericTable({
                       columns?.map((column) => (
                         <td className="px-4 py-3">
                           {typeof row[column] == "object"
-                            ? row[column].map((item) => item.name)
+                            ? row[column].map((item) => item.name + ",")
                             : row[column]}
                         </td>
                       ))}
                     <td className="px-4 py-3 flex items-center justify-end">
                       {actions?.map((action) => (
-                        <button onClick={()=>  action.action(row)} className="bg-gray-200 p-2 rounded-md mx-1">
+                        <button
+                          onClick={() => action.action(row)}
+                          className="bg-gray-200 p-2 rounded-md mx-1"
+                        >
                           {action.name}
                         </button>
                       ))}
@@ -279,7 +281,7 @@ export default function GenericTable({
             className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
             aria-label="Table navigation"
           >
-            <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+            {/* <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
               Showing
               <span className="font-semibold text-gray-900 dark:text-white">
                 1-10
@@ -288,7 +290,7 @@ export default function GenericTable({
               <span className="font-semibold text-gray-900 dark:text-white">
                 1000
               </span>
-            </span>
+            </span> */}
             {/*   <ul className="inline-flex items-stretch -space-x-px">
               <li>
                 <a

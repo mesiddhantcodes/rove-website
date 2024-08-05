@@ -209,7 +209,14 @@ export default function Sidebar() {
                     clipRule="evenodd"
                   />
                 </svg>
-                <span className="ml-3">Help</span>
+                <button 
+               onClick={()=>{
+                localStorage.clear();
+                window.location.href = "/";
+               }}
+                className="ml-3">
+                  Log Out
+                </button>
               </a>
             </li>
           </ul>

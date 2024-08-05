@@ -12,3 +12,4 @@ export const loginAPI = async (email, password) => {
     return error.response;
   }
 };
+

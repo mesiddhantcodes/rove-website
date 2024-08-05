@@ -1,13 +1,19 @@
 import { useEffect, useState } from "preact/hooks";
 import React from "react";
-import { addRouteAPI, getStoppageAPI } from "../../service/route.service";
+import {
+  addRouteAPI,
+  addStoppageAPI,
+  getStoppageAPI,
+} from "../../service/route.service";
 import { toast } from "react-hot-toast";
 import { getBusesAPI } from "../../service/bus.service";
+import { Marker, Map } from "react-google-maps";
 
 export default function RouteForm({ showModal, setShowModal, modelData }) {
   const [payload, setPayload] = useState(modelData || {});
   const [stoppages, setStoppages] = useState([]);
   const [buses, setBuses] = useState([]);
+
   const handleAdd = async () => {
     try {
       await addRouteAPI({ ...payload, role: "admin" });
@@ -18,7 +24,8 @@ export default function RouteForm({ showModal, setShowModal, modelData }) {
   };
   const getAllStoppages = async () => {
     try {
-      const { data } = await getStoppageAPI();
+      console.log(modelData);
+      const { data } = await getStoppageAPI(modelData?.id);
       console.log(data);
       setStoppages(data);
     } catch (error) {
@@ -40,12 +47,14 @@ export default function RouteForm({ showModal, setShowModal, modelData }) {
 
   const handleAddStoppage = async () => {
     try {
-      await addStop;
+      delete payload.stoppages;
+      await addStoppageAPI(modelData.id, { ...payload,name:payload.location.name });
       window.location.reload();
     } catch (e) {
       toast.error(e.message);
     }
   };
+
   useEffect(() => {
     getAllStoppages();
     getAllBuses();
@@ -58,6 +67,7 @@ export default function RouteForm({ showModal, setShowModal, modelData }) {
         aria-hidden="false"
         className="flex bg-[rgb(0,0,0,0.5)] overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full"
       >
+      {/* sdfsdfasf */}
         <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
           {/* Modal content */}
           <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
@@ -181,6 +191,7 @@ export default function RouteForm({ showModal, setShowModal, modelData }) {
                     ))}
                   </select>
                 </div> */}
+                <br />
                 <button
                   onClick={handleAdd}
                   type="submit"
@@ -204,7 +215,7 @@ export default function RouteForm({ showModal, setShowModal, modelData }) {
                   <>
                     <br />
                     <h1 className="text-2xl">Stoppage</h1>
-                    <br />{" "}
+                    <br />
                   </>
                 )}
 
@@ -217,15 +228,29 @@ export default function RouteForm({ showModal, setShowModal, modelData }) {
                       >
                         Stoppage name
                       </label>
+                      {/* setPayload({
+                            ...payload,
+                            stoppage: {
+                              ...payload.stoppage,
+                              name: e.target.value,
+                            },
+                          }) */}
                       <input
                         type="text"
                         name="name"
                         id="name"
-                        value={payload.name}
+                        value={payload?.location?.name}
                         onChange={(e) =>
-                          setPayload({ ...payload, name: e.target.value })
+                          setPayload({
+                            ...payload,
+                            location: {
+                              ...payload.location,
+                              name: e.target.value,
+                            },
+                          })
                         }
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded
+                        -lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Stoppage Name"
                         required=""
                       />
@@ -241,9 +266,15 @@ export default function RouteForm({ showModal, setShowModal, modelData }) {
                         type="number"
                         name="name"
                         id="name"
-                        value={payload.lat}
+                        value={payload?.location?.lat}
                         onChange={(e) =>
-                          setPayload({ ...payload, lat: e.target.value })
+                          setPayload({
+                            ...payload,
+                            location: {
+                              ...payload.location,
+                              lat: e.target.value,
+                            },
+                          })
                         }
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Latitude"
@@ -261,9 +292,15 @@ export default function RouteForm({ showModal, setShowModal, modelData }) {
                         type="number"
                         name="name"
                         id="name"
-                        value={payload.long}
+                        value={payload?.location?.long}
                         onChange={(e) =>
-                          setPayload({ ...payload, long: e.target.value })
+                          setPayload({
+                            ...payload,
+                            location: {
+                              ...payload.location,
+                              long: e.target.value,
+                            },
+                          })
                         }
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Longitude"

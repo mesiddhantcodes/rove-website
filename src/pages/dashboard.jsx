@@ -1,39 +1,86 @@
+// export default function Dashboard() {
+//   return (
+//     <div>
+
+//       <img
+//         className="flex w-[66%] h-[66%]  shadow-lg rounded-lg  "
+//         src="./src/assets/images/rovebg.png"
+//         alt=""
+//       />
+
+//     </div>
+//   );
+// }
+
+// import React from 'react';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+// import faker from 'faker';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+export const options = {
+  responsive: true,
+  plugins: {
+    title: {
+      display: true,
+      text: "Chart.js Bar Chart",
+    },
+  },
+};
+
+const labels = ["Driver", "Travellar", "Bus"];
+
+export const data = {
+  labels,  
+  datasets: [
+    {
+      label: "Dataset 1",
+      // data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+      backgroundColor: "rgba(255, 99, 132, 0.5)",
+    },
+    // {
+    //   label: 'Dataset 2',
+    //   // data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
+    //   backgroundColor: 'rgba(53, 162, 235, 0.5)',
+    // },
+  ],
+};
+
 export default function Dashboard() {
-  return (
-    <section className="bg-center bg-no-repeat bg-[url('/src/assets/images/rove.png')] bg-gray-700 bg-blend-multiply">
-      <div className="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
-        <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl">
-          We invest in the world’s potential
-        </h1>
-        <p className="mb-8 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">
-          Here at Flowbite we focus on markets where technology, innovation, and
-          capital can unlock long-term value and drive economic growth.
-        </p>
-        {/* <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
-          <a
-            href="#"
-            className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900"
-          >
-            Get started
-            <svg
-              className="w-3.5 h-3.5 ms-2 rtl:rotate-180"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 10"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M1 5h12m0 0L9 1m4 4L9 9"
-              />
-            </svg>
-          </a>
-          
-        </div> */}
-      </div>
-    </section>
-  );
+  return <Bar options={options} data={data} />;
 }
+
+// import { Bar } from "react-chartjs-2";
+
+// const ChartComponent = () => {
+//   const data = {
+//     labels: ["January", "February", "March", "April", "May", "June"],
+//     datasets: [
+//       {
+//         label: "My dataset",
+//         data: [10, 20, 30, 40, 50, 60],
+//         backgroundColor: "rgba(255, 99, 132, 0.2)",
+//         borderColor: "rgba(255, 99, 132, 1)",
+//         borderWidth: 1,
+//       },
+//     ],
+//   };
+
+//   return <Bar data={data} />;
+// };

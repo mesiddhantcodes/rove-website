@@ -17,33 +17,36 @@ const Main = () => {
 
   const [isAuthPages, setIsAuthPages] = useState(
     router.path === "/login" ||
-      router.path === "/forgot-password" ||
-      router.path === "/"
+      router.path === "/forgot-password" 
   );
   useEffect(() => {
     if (
       router.path === "/login" ||
-      router.path === "/forgot-password" ||
-      router.path === "/"
+      router.path === "/forgot-password" 
+
     ) {
       setIsAuthPages(true);
     } else {
       setIsAuthPages(false);
     }
-  }, [router.path,localStorage.getItem("token")]);
+  }, [router.path, localStorage.getItem("token")]);
   return (
     <div
       className={`flex flex-row w-[100%] ${
         isAuthPages ? "justify-center" : ""
       }`}
     >
-      {isAuthPages ? null : <Sidebar />}
-      {localStorage.getItem("token") ? (
+      {/* {localStorage.clear()} */}
+
+
+      {localStorage.getItem("token")&&localStorage.getItem("user") ? (
+        // localStorage.getItem("user") &&
+        // JSON.parse(localStorage.getItem("user")).role === "admin" ? ( 
         <DashboardLayout>
+          <Sidebar />
           <Toaster />
           <Router>
-            <Route path="/" component={App} />
-
+          <Route path="/" component={Dashboard} />
             <Route path="/dashboard" component={Dashboard} />
 
             <Route path="/travellers" component={Travellar} />
@@ -52,11 +55,18 @@ const Main = () => {
             <Route path="/bus" component={BusForm} />
           </Router>
         </DashboardLayout>
+
       ) : (
-        <Router>
+        <div className="flex justify-center items-center w-[100%]">
+          <Router>
           <Route path="/" component={LoginPage} />
+          <Route path="/" component={App} />
+
           <Route path="/forgot-password" component={LoginPage} />
         </Router>
+        </div>
+
+        // </din>
       )}
     </div>
   );

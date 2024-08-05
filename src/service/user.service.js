@@ -11,3 +11,14 @@ export const getUsersAPI = async (role) => {
     return response
 }
 
+
+export const updateUserAPI = async (id, data) => {
+    const response = await api.patch(`/user/${id}`, data)
+    return response
+}
+
+export const deleteUserAPI = async (id) => {
+    const response = await api.delete(`/user/${id}`)
+    return response
+}
+

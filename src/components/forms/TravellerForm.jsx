@@ -1,13 +1,28 @@
 import React from "react";
-import { addUserAPI } from "../../service/user.service";
+import {
+  addUserAPI,
+  deleteUserAPI,
+  updateUserAPI,
+} from "../../service/user.service";
 import { useEffect, useState } from "preact/hooks";
 import toast from "react-hot-toast";
 import { getStoppageAPI } from "../../service/route.service";
+import { getBusesAPI } from "../../service/bus.service";
 export default function TravellerForm({ showModal, setShowModal, modelData }) {
   const [payload, setPayload] = useState(modelData || {});
+  const [stoppages, setStoppages] = useState([]);
+  const [buses, setBuses] = useState([]);
+
   const handleAdd = async () => {
     try {
-      await addUserAPI({ ...payload, role: "user" });
+      if (modelData) {
+        delete payload.role;
+        delete payload.isEmailVerified;
+        delete payload.id;
+        await updateUserAPI(modelData.id, payload);
+      } else {
+        await addUserAPI({ ...payload, role: "user" });
+      }
       window.location.reload();
     } catch (e) {
       toast.error(e.message);
@@ -16,14 +31,37 @@ export default function TravellerForm({ showModal, setShowModal, modelData }) {
   const loadStoppages = async () => {
     try {
       const { data } = await getStoppageAPI();
-      console.log(data);
+      console.log("datastoppages-------", data);
+
+      setStoppages(data);
     } catch (e) {
       toast.error(e.message);
     }
   };
+
+  const deleteUser = (id) => {
+    try {
+      deleteUserAPI(id);
+      window.location.reload();
+    } catch (e) {
+      toast.error(e.message);
+    }
+  };
+
+  
+  const loadBuses = async () => {
+    try {
+      const { data } = await getBusesAPI();
+      setBuses(data);
+    } catch (e) {
+      toast.error(e.message);
+    }
+  };
+
   useEffect(() => {
     loadStoppages();
-  }, []);
+    loadBuses();
+  }, [modelData]);
   return (
     <div className="flex justify-center items-center w-full">
       <div
@@ -107,6 +145,7 @@ export default function TravellerForm({ showModal, setShowModal, modelData }) {
                     />
                   </div>
                 )}
+
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="Email"
@@ -213,12 +252,12 @@ export default function TravellerForm({ showModal, setShowModal, modelData }) {
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   >
                     <option selected="">Select Branch</option>
-                    <option value="TV">CSE</option>
-                    <option value="PC">ECE</option>
-                    <option value="GA">Mechanical</option>
-                    <option value="PH">Civil</option>
-                    <option value="AC">Electrical</option>
-                    <option value="">AI-ML </option>
+                    <option value="CSE">CSE</option>
+                    <option value="ECE">ECE</option>
+                    <option value="MECHANICAL">Mechanical</option>
+                    <option value="CIVIL">Civil</option>
+                    <option value="ELECTRICA">Electrical</option>
+                    <option value="AI-ML">AI-ML </option>
                   </select>
                 </div>
                 <div>
@@ -244,6 +283,29 @@ export default function TravellerForm({ showModal, setShowModal, modelData }) {
                     <option value="4">4</option>
                   </select>
                 </div>
+                {/* ================================================ */}
+                <div>
+                  <label
+                    htmlFor="category"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    BUS
+                  </label>
+                  <select
+                    id="category"
+                    name="assignedBus"
+                    value={payload.assignedBus}
+                    onChange={(e) =>
+                      setPayload({ ...payload, assignedBus: e.target.value })
+                    }
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  >
+                    <option>Select Bus</option>
+                    {buses.map((bus) => (
+                      <option value={bus._id}>{bus.name}</option>
+                    ))}
+                  </select>
+                </div>
                 {modelData ? (
                   <div>
                     <label
@@ -252,104 +314,76 @@ export default function TravellerForm({ showModal, setShowModal, modelData }) {
                     >
                       Stoppage Name
                     </label>
-                    <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <select
+                      value={payload.stoppage}
+                      onChange={(e) =>
+                        setPayload({
+                          ...payload,
+                          stoppage: e.target.value,
+                        })
+                      }
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    >
                       <option>Select Stoppage</option>
+                      {stoppages.map((stoppage) => (
+                        <option value={stoppage._id}>{stoppage.name}</option>
+                      ))}
                     </select>
                   </div>
                 ) : (
-                  <>
-                    <div>
-                      <label
-                        htmlFor="category"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Stoppage Name
-                      </label>
-
-                      <input
-                        type="string"
-                        name="stoppage name"
-                        id="roll "
-                        onChange={(e) =>
-                          setPayload({
-                            ...payload,
-                            stoppage: {
-                              ...payload.stoppage,
-                              name: e.target.value,
-                            },
-                          })
-                        }
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Stoppage Name"
-                        required="true"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="category"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Stoppage Latitude
-                      </label>
-
-                      <input
-                        type="string"
-                        name="Stoppage Latitude"
-                        id="roll"
-                        value={payload.location}
-                        onChange={(e) =>
-                          setPayload({
-                            ...payload,
-                            stoppage: {
-                              ...payload.stoppage,
-                              location: {
-                                ...payload.stoppage.location,
-                                lat: e.target.value,
-                              },
-                            },
-                          })
-                        }
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Stoppage Latitude"
-                        required="true"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="category"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Stoppage Longitude
-                      </label>
-
-                      <input
-                        type="string"
-                        name="Stoppage Longitude"
-                        id="roll"
-                        value={payload.location}
-                        onChange={(e) =>
-                          setPayload({
-                            ...payload,
-                            stoppage: {
-                              ...payload.stoppage,
-                              location: {
-                                ...payload.stoppage.location,
-                                long: e.target.value,
-                              },
-                            },
-                          })
-                        }
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Stoppage Longitude"
-                        required="true"
-                      />
-                    </div>
-                  </>
+                  <div>
+                    <label
+                      htmlFor="category"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Stoppage Name
+                    </label>
+                    <select
+                      value={payload.stoppage}
+                      onChange={(e) =>
+                        setPayload({
+                          ...payload,
+                          stoppage: e.target.value,
+                        })
+                      }
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    >
+                      <option>Select Stoppage</option>
+                      {stoppages.map((stoppage) => (
+                        <option value={stoppage._id}>{stoppage.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+                {!modelData && (
+                  <div>
+                    <label
+                      htmlFor="Password"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      College Name
+                    </label>
+                    <select
+                      id="category"
+                      name="branch"
+                      value={payload.college}
+                      onChange={(e) =>
+                        setPayload({ ...payload, college: e.target.value })
+                      }
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    >
+                      <option selected="">Select College</option>
+                      <option value="UIT">UIT</option>
+                      <option value="UCER">UCER</option>
+                      <option value="UIM">UIM</option>
+                    </select>
+                  </div>
                 )}
                 {/* <div className="sm:col-span-2"> */}
               </div>
               <button
                 onClick={handleAdd}
+                
                 className="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
                 <svg
@@ -364,7 +398,7 @@ export default function TravellerForm({ showModal, setShowModal, modelData }) {
                     clipRule="evenodd"
                   />
                 </svg>
-                Add New Traveller
+                {modelData ? "Update" : "Add"} Traveller
               </button>
             </div>
           </div>

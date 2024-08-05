@@ -5,7 +5,7 @@ import config from "../config";
 
 
 const api = axios.create({
-  baseURL: config.BACKEND_URI,
+  baseURL: config.DEV_BACKEND_URI,
 });
 
 api.interceptors.request.use(async (config) => {
