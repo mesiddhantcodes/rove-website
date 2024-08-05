@@ -1,4 +1,4 @@
-# Admin Panel
+# Admin Panel Rove
 
 This is an admin panel developed using React and Tailwind CSS. The panel allows admins to manage travelers, bus stoppages, and drivers, with the ability to update the data as needed.
 
@@ -11,8 +11,7 @@ This is an admin panel developed using React and Tailwind CSS. The panel allows 
 - [Usage](#usage)
 - [Scripts](#scripts)
 - [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [License](#license)
+
 
 ## Features
 
