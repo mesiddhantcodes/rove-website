@@ -53,12 +53,12 @@ To get a local copy up and running, follow these simple steps.
    ```sh
    git clone https://github.com/your-username/admin-panel.git
    cd admin-panel
-```sh   
-npm install
-# or
-yarn install
-```sh
-npm run dev
-# or
-yarn dev
+2. Install
+   ```sh   
+   npm install
+   # or
+   yarn install
+   npm run dev
+   # or
+   yarn dev
 
