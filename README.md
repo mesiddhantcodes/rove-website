@@ -58,9 +58,12 @@ To get a local copy up and running, follow these simple steps.
    npm install
    # or
    yarn install
+   # and
    npm run dev
    # or
    yarn dev
+
+### Project Structure
 ```bash
 admin-panel/
 ├── public/
