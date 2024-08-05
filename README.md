@@ -61,4 +61,30 @@ To get a local copy up and running, follow these simple steps.
    npm run dev
    # or
    yarn dev
+```bash
+admin-panel/
+├── public/
+│   └── index.html
+├── src/
+│   ├── components/
+│   │   └── sidebar.jsx
+│   ├── pages/
+│   │   ├── bus.jsx
+│   │   ├── dashboard.jsx
+│   │   ├── login.jsx
+│   │   ├── route.jsx
+│   │   └── users.jsx
+│   ├── styles/
+│   │   └── index.css
+│   ├── App.jsx
+│   ├── DashboardLayout.jsx
+│   └── index.jsx
+├── arduino/
+│   ├── code/
+│   │   └── arduino_code.ino
+│   └── README.md
+├── .gitignore
+├── package.json
+├── tailwind.config.js
+└── vite.config.js
 
