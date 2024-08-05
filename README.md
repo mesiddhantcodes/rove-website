@@ -53,31 +53,12 @@ To get a local copy up and running, follow these simple steps.
    ```sh
    git clone https://github.com/your-username/admin-panel.git
    cd admin-panel
+```sh   
 npm install
 # or
 yarn install
+```sh
 npm run dev
 # or
 yarn dev
 
-admin-panel/
-├── public/
-│   └── index.html
-├── src/
-│   ├── components/
-│   │   └── sidebar.jsx
-│   ├── pages/
-│   │   ├── bus.jsx
-│   │   ├── dashboard.jsx
-│   │   ├── login.jsx
-│   │   ├── route.jsx
-│   │   └── users.jsx
-│   ├── styles/
-│   │   └── index.css
-│   ├── App.jsx
-│   ├── DashboardLayout.jsx
-│   └── index.jsx
-├── .gitignore
-├── package.json
-├── tailwind.config.js
-└── vite.config.js
